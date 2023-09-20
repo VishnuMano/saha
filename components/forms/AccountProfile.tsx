@@ -11,6 +11,7 @@ import {
     FormMessage,
   } from "@/components/ui/form"
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from "zod";
 import { UserValidation } from '@/lib/validations/user';
@@ -35,10 +36,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     const form = useForm({
         resolver: zodResolver(UserValidation) ,
         defaultValues: {
-            profile_photo: '',
-            name: '',
-            username: '',
-            bio: ''
+            profile_photo: user?.image || "",
+            name: user?.name || "",
+            username: user?.username || "",
+            bio: user?.bio || ""
         }
     })
 
@@ -59,7 +60,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 onSubmit={form.handleSubmit(onSubmit)} 
                 className="flex flex-col justify-start gap-10"
                 >
-                    // Profile Picture
+                    {/* Profile Picture */}
                     <FormField
                         control={form.control}
                         name="profile_photo"
@@ -99,29 +100,67 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                         )}
                     />
 
-                    // 
+                    {/* Name */}
                     <FormField
                         control={form.control}
                         name="name"
                         render={({ field }) => (
-                            <FormItem className="flex items-center gap-3 w-full">
+                            <FormItem className="flex flex-col w-full gap-3">
                                 <FormLabel className="text-base-semibold text-light-2">
                                     Name
                                 </FormLabel>
-                                <FormControl className="flex-1 text-base-semibold text-gray-200">
-                                    <Input 
-                                        type="file"
-                                        accept="image/"
-                                        placeholder="Upload a photo"
-                                        className="account-form_image-input"
-                                        onChange={(e) => handleImage(e, field.onChange)}
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        className="account-form_input no-focus"
+                                        {...field}
                                     />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
 
-                    <Button type="submit">Submit</Button>
+                    {/* Username */}
+                    <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col w-full gap-3">
+                                <FormLabel className="text-base-semibold text-light-2">
+                                    Username
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        className="account-form_input no-focus"
+                                        {...field}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* Bio */}
+                    <FormField
+                        control={form.control}
+                        name="bio"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col w-full gap-3">
+                                <FormLabel className="text-base-semibold text-light-2">
+                                    Bio
+                                </FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        rows={10}
+                                        className="account-form_input no-focus"
+                                        {...field}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button type="submit" className="bg-primary-500">Submit</Button>
                 </form>
             </Form>
         </div>
